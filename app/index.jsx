@@ -1,12 +1,20 @@
-import { Text, View } from "react-native";
+import { useRouter } from "expo-router";
+import { Text, TouchableOpacity, View } from "react-native";
 
 export default function Index() {
+  const router = useRouter();
+
   return (
     <View className="flex-1 items-center justify-center bg-stone-50">
       <Text className="text-1xl font-bold text-blue-500">
-        Welcome to Nativewind!
+        hello expo
       </Text>
+
+      <TouchableOpacity onPress={() => router.push("/Login-Screen")}>
+        <Text>
+          Login page add
+        </Text>
+      </TouchableOpacity>
     </View>
- 
   );
 }
