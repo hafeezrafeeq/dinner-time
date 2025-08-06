@@ -12,7 +12,7 @@ export default function Index() {
 
       <TouchableOpacity onPress={() => router.push("/Login-Screen")}>
         <Text>
-          Login page add
+          Login Page Add
         </Text>
       </TouchableOpacity>
     </View>
