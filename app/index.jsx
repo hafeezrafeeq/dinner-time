@@ -1,7 +1,7 @@
 import { useRouter } from "expo-router";
 import { Image, ScrollView, StatusBar, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-// import "../global.css";
+
 // import logo from '../assets/images/dinetimelogo.png';
 
 const frame = require("../assets/images/Frame.png")
@@ -45,15 +45,15 @@ export default function Index() {
           <View>
             <Text className="text-white text-base font-semibold my-4">
           
-              <View className="border-b-2 border-[#f49b33] w-24" />{" "} or {"  "}
-              <View className="border-b-2 border-[#f49b33] w-24" />
+              <View className="border-b-2 border-[#f49b33] mb-1 w-24" />{" "} or{"  "}
+              <View className="border-b-2 border-[#f49b33] mb-1 w-24" />
             </Text>
 
 
             <TouchableOpacity onPress={() => router.push("/signin")}
               className="flex flex-row items-center justify-center mt-1 "
             >
-              <Text className="text-white font-semibold mr-2 ">Already a User? </Text>
+              <Text className="text-white font-semibold mr-1 ">Already a User? </Text>
               <Text className="text-base font-semibold underline text-[#f49b33]">Sign in</Text>
 
             </TouchableOpacity>
@@ -64,8 +64,6 @@ export default function Index() {
         <View className=" flex-1">
           <Image source={frame} className="w-full h-full " resizeMode="contain" />
         </View>
-
-
 
       </ScrollView>
     </SafeAreaView>
