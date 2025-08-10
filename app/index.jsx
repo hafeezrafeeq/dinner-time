@@ -14,7 +14,7 @@ export default function Index() {
       <StatusBar barStyle={"light-content"} backgroundColor={"#2b2b2b"} />
       <ScrollView contentContainerStyle={{ height: "100%" }}>
 
-        <View className="m-2 flex flex-col items-center">
+        <View className="m-2 flex flex-col justify-centerr items-center">
 
           <Image source={logo} alt="image" style={{ width: 300, height: 300 }} />
 
@@ -42,11 +42,11 @@ export default function Index() {
           </View>
 
 
-          <View>
-            <Text className="text-white text-base font-semibold my-4">
+          <View className="">
+            <Text className="text-white text-center text-base font-semibold my-4">
           
-              <View className="border-b-2 border-[#f49b33] mb-1 w-24" />{" "} or{"  "}
-              <View className="border-b-2 border-[#f49b33] mb-1 w-24" />
+              <View className="border-b-2 border-[#f49b33] mb-1 w-20" />{" "} or{"  "}
+              <View className="border-b-2 border-[#f49b33] mb-1 w-20" />
             </Text>
 
 

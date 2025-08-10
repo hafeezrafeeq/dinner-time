@@ -12,9 +12,10 @@ const logo = require("../../assets/images/dinetimelogo.png");
 const frame = require("../../assets/images/Frame.png");
 
 
-export default function signup() {
+export default function signin() {
     const router = useRouter();
-    const handleSignup = () => {
+    const handleSignin = () => {
+
     }
 
     return (
@@ -29,8 +30,8 @@ export default function signup() {
                             Let's Get you Started
                         </Text>
                     </View>
-                    <View className="w-5/6 justify-center flex items-center">
-                        <Formik initialValues={{ email: "", pasword: "", }} validationSchema={validationSchema} onSubmit={handleSignup}>
+                    <View className="w-5/6">
+                        <Formik initialValues={{ email: "", pasword: "", }} validationSchema={validationSchema} onSubmit={handleSignin}>
                             {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
                                 <>
                                     <View className="w-full">
@@ -75,7 +76,7 @@ export default function signup() {
                                         className=" bg-[#f49b33]  px-28 py-3 mt-5 rounded"
                                     >
                                         <Text className="text-white text-lg font-semibold text-center">
-                                            Submit
+                                            Sign in
                                         </Text>
                                     </TouchableOpacity>
                                 </>
@@ -83,11 +84,11 @@ export default function signup() {
                         </Formik>
 
 
-                        <TouchableOpacity onPress={() => router.push("/signin")}
-                            className="flex flex-row items-center justify-center mt-10"
+                        <TouchableOpacity onPress={() => router.push("/signup")}
+                            className="flex flex-row items-center justify-center mt-12"
                         >
-                            <Text className="text-white font-semibold mr-1 ">Already a User? </Text>
-                            <Text className="text-base font-semibold underline text-[#f49b33]">Sign in</Text>
+                            <Text className="text-white font-semibold mr-1 ">New User </Text>
+                            <Text className="text-base font-semibold underline text-[#f49b33]">Sign Up</Text>
 
                         </TouchableOpacity>
 
@@ -102,21 +103,23 @@ export default function signup() {
                             <TouchableOpacity onPress={() => router.push("/home")}
                                 className="flex flex-row items-center justify-center mt-12"
                             >
-                                <Text className="text-white font-semibold mr-1 ">be a</Text>
-                                <Text className="text-base font-semibold underline text-[#f49b33]">Guset User</Text>
+                                <Text className="text-white font-semibold mr-1 ">be a </Text>
+                                <Text className="text-base font-semibold underline text-[#f49b33]"> Guset User</Text>
 
                             </TouchableOpacity>
 
 
 
                         </View>
+
                     </View>
+
+
                 </View>
 
                 <View className=" flex-1">
                     <Image source={frame} className="w-full h-full " resizeMode="contain" />
                 </View>
-
             </ScrollView>
         </SafeAreaView >
     );
