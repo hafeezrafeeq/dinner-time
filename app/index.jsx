@@ -2,7 +2,6 @@ import { useRouter } from "expo-router";
 import { Image, ScrollView, StatusBar, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-// import logo from '../assets/images/dinetimelogo.png';
 
 const frame = require("../assets/images/Frame.png")
 const logo = require("../assets/images/dinetimelogo.png");
