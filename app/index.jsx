@@ -15,7 +15,9 @@ export default function Index() {
 
         <View className="m-2 flex flex-col justify-centerr items-center">
 
-          <Image source={logo} alt="image" style={{ width: 300, height: 300 }} />
+          <Image source={logo} alt="image"
+            style={{ width: 300, height:300, borderRadius: 12 }}
+            resizeMode="contain" />
 
 
           <View className="w-3/4 ">
@@ -43,7 +45,7 @@ export default function Index() {
 
           <View className="">
             <Text className="text-white text-center text-base font-semibold my-4">
-          
+
               <View className="border-b-2 border-[#f49b33] mb-1 w-20" />{" "} or{"  "}
               <View className="border-b-2 border-[#f49b33] mb-1 w-20" />
             </Text>

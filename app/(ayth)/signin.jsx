@@ -23,10 +23,14 @@ export default function signin() {
             <StatusBar barStyle={"light-content"} backgroundColor={"#2b2b2b"} />
             <ScrollView contentContainerStyle={{ height: "100%" }}>
 
-                <View className="mt-2 flex flex-col items-center">
-                    <Image source={logo} alt="image" style={{ width: 200, height: 200 }} />
+                <View className=" flex flex-col items-center">
+
+                    <Image source={logo} alt="image"
+                        style={{ width: 250, height: 250,}}
+                        resizeMode="contain" />
+
                     <View className="w-3/4 ">
-                        <Text className="text-white text-2xl font-bold text-center mb-10">
+                        <Text className="text-white text-2xl font-bold text-center m">
                             Let's Get you Started
                         </Text>
                     </View>
@@ -101,7 +105,7 @@ export default function signin() {
 
 
                             <TouchableOpacity onPress={() => router.push("/home")}
-                                className="flex flex-row items-center justify-center mt-12"
+                                className="flex flex-row items-center justify-center mt-6"
                             >
                                 <Text className="text-white font-semibold mr-1 ">be a </Text>
                                 <Text className="text-base font-semibold underline text-[#f49b33]"> Guset User</Text>
