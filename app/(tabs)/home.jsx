@@ -59,7 +59,7 @@ const Home = () => {
       {/* Welcome Header */}
 
 
-      <View className="flex  border-b border-1 border-stone-600 flex-row items-center justify-between px-4 h-24 pb-4 border-lg bg-[#2b2b2b] mb-3 ">
+      <View className="flex  border-b border-1 border-stone-600 flex-row items-center justify-between px-8 h-24 pb-4 border-lg bg-[#2b2b2b] mb-3 ">
         <View>
           <Image source={logo} alt="image"
             style={{ width: 180, }}
@@ -86,9 +86,9 @@ const Home = () => {
           >
 
           </ImageBackground>
-            <Text className={`absolute top-0 left-0 right-0  items-center text-5xl  font-bold opacity-100 p-6 text-stone-200`}>
-              Welcome to Dine Time !
-            </Text>
+          <Text className={`absolute top-0 left-0 right-0  items-center text-5xl  font-bold opacity-100 p-6 text-stone-200`}>
+            Welcome to Dine Time !
+          </Text>
 
 
         </View>
@@ -110,8 +110,34 @@ const Home = () => {
           <ActivityIndicator animating color="#fb9b33" size="large" />
         )
       }
+
+
+
+
+      {/* Restaurant List */}
+      {
+        restaurants?.length > 0 ? (
+          <FlatList
+            data={restaurants}
+            renderItem={renderItem}
+            keyExtractor={(item, index) => index.toString()}
+            horizontal
+            contentContainerStyle={{ padding: 16 }}
+            showsHorizontalScrollIndicator={false}
+            scrollEnabled
+          />
+        ) : (
+          <ActivityIndicator animating color="#fb9b33" size="large" />
+        )
+      }
     </SafeAreaView >
   );
 };
+
+
+
+
+
+
 
 export default Home;
