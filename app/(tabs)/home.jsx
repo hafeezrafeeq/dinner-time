@@ -9,19 +9,24 @@ import {
   FlatList,
   ActivityIndicator,
 } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BlurView } from 'expo-blur';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { restaurants } from '../../store/restaurants';
 import { Ionicons } from "@expo/vector-icons";
+import uploadData from '../../config/bulkupload';
+
 
 const logo = require("../../assets/images/dinetimelogo.png");
 const banner = require("../../assets/images/homeBanner.png");
 
 const Home = () => {
+  useEffect(() => {
+    uploadData();
+  }, []);
 
   const renderItem = ({ item }) => (
-    <TouchableOpacity className="rounded-lg h-100 overflow-hidden mr-6 w-90 ">
+    <TouchableOpacity className="rounded-lg w-95  overflow-hidden mr-6">
       {/* Background Image */}
       <ImageBackground
         resizeMode="cover"
@@ -29,28 +34,27 @@ const Home = () => {
         className="h-40 w-full" >
       </ImageBackground>
 
-      <BlurView intensity={20} tint="dark" className="flex-1 justify-end p-3">
 
 
-        {/* Card Content */}
-        <View className="p-4  pt-20">
-          <Text className="text-xl mb-1 font-bold text-white">{item.name}</Text>
-          <Text className="text-gray-300 text-md">{item.address}</Text>
-          <View className="flex-row mt-2 ">
-            <Text className="font-semibold text-gray-300 mr-2">
-              Open : {item.opening} {"   "}
-            </Text>
-            <Text className="  text-gray-300">
-              Close: {item.closing}
-            </Text>
-          </View>
-
-          {/* Action Button */}
-          <TouchableOpacity className="bg-[#fb9b33] mt-4 rounded-xl py-2 active:bg-[#e68a20]">
-            <Text className="text-center text-2xl font-semibold text-white ">Reserve Now</Text>
-          </TouchableOpacity>
+      {/* Card Content */}
+      <View className="p-4 bg-[#444444]">
+        <Text className="text-xl mb-1 font-bold text-white">{item.name}</Text>
+        <Text className="text-gray-300 text-md">{item.address}</Text>
+        <View className="flex-row mt-2 ">
+          <Text className="font-semibold text-gray-300 mr-2">
+            Open : {item.opening} {"   "}
+          </Text>
+          <Text className="  text-gray-300">
+            Close: {item.closing}
+          </Text>
         </View>
-      </BlurView>
+
+        {/* Action Button */}
+        <TouchableOpacity className="bg-[#fb9b33] mt-4 rounded-md py-2 ">
+          <Text className="text-center text-xl font-bold text-white ">Reserve Now</Text>
+        </TouchableOpacity>
+      </View>
+
     </TouchableOpacity >
   );
 
@@ -74,62 +78,84 @@ const Home = () => {
 
 
 
+      <ScrollView stickyHeaderIndices={[0]}>
 
+        {/* Banner */}
 
-      {/* Banner */}
-      <ScrollView>
         <View className="">
           <ImageBackground
             source={banner}
             resizeMethod='covero'
-            className="flex-1 w-full h-60 bg-[#fb9b33] opacity-40 items-start rounded-lg justify-center"
+            className="flex-1 w-full h-60 items-start bg-[#2b2b2b] rounded-lg justify-center"
           >
+            <BlurView
+              intensity={Platform.OS === "android" ? 100 : 25}
+              tint="dark"
+              className="w-full p-4 shadow-lg"
+            >
+              <Text className="text-center text-3xl font-bold text-white">
+                Dine with your loved ones
+              </Text>
+            </BlurView>
 
           </ImageBackground>
-          <Text className={`absolute top-0 left-0 right-0  items-center text-5xl  font-bold opacity-100 p-6 text-stone-200`}>
-            Welcome to Dine Time !
-          </Text>
 
 
         </View>
+
+
+        <View className="p-4 bg-[#2b2b2b] justify-center flex-row items-center">
+          <Text className="text-3xl text-[#d2d2d2] text-center mr-2 font-semibold">
+            Special Discount
+          </Text>
+        </View>
+
+
+        {/* Restaurant List */}
+        {
+          restaurants?.length > 0 ? (
+            <FlatList
+              data={restaurants}
+              renderItem={renderItem}
+              keyExtractor={(item, index) => index.toString()}
+              horizontal
+              contentContainerStyle={{ padding: 16 }}
+              showsHorizontalScrollIndicator={false}
+              scrollEnabled
+            />
+          ) : (
+            <ActivityIndicator animating color="#fb9b33" size="large" />
+          )
+        }
+
+
+
+
+        {/* Restaurant List */}
+
+        <View className="p-4 bg-[#2b2b2b] flex-row justify-center items-center">
+          <Text className="text-3xl text-[#d2d2d2]  mr-2 font-semibold">
+            Our Restaurants
+          </Text>
+        </View>
+
+
+        {
+          restaurants?.length > 0 ? (
+            <FlatList
+              data={restaurants}
+              renderItem={renderItem}
+              keyExtractor={(item, index) => index.toString()}
+              horizontal
+              contentContainerStyle={{ padding: 16 }}
+              showsHorizontalScrollIndicator={false}
+              scrollEnabled
+            />
+          ) : (
+            <ActivityIndicator animating color="#fb9b33" size="large" />
+          )
+        }
       </ScrollView>
-
-      {/* Restaurant List */}
-      {
-        restaurants?.length > 0 ? (
-          <FlatList
-            data={restaurants}
-            renderItem={renderItem}
-            keyExtractor={(item, index) => index.toString()}
-            horizontal
-            contentContainerStyle={{ padding: 16 }}
-            showsHorizontalScrollIndicator={false}
-            scrollEnabled
-          />
-        ) : (
-          <ActivityIndicator animating color="#fb9b33" size="large" />
-        )
-      }
-
-
-
-
-      {/* Restaurant List */}
-      {
-        restaurants?.length > 0 ? (
-          <FlatList
-            data={restaurants}
-            renderItem={renderItem}
-            keyExtractor={(item, index) => index.toString()}
-            horizontal
-            contentContainerStyle={{ padding: 16 }}
-            showsHorizontalScrollIndicator={false}
-            scrollEnabled
-          />
-        ) : (
-          <ActivityIndicator animating color="#fb9b33" size="large" />
-        )
-      }
     </SafeAreaView >
   );
 };
