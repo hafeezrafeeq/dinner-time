@@ -9,54 +9,77 @@ import {
   FlatList,
   ActivityIndicator,
 } from 'react-native';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BlurView } from 'expo-blur';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { restaurants } from '../../store/restaurants';
 import { Ionicons } from "@expo/vector-icons";
-import uploadData from '../../config/bulkupload';
+import { collection, getDocs, query } from 'firebase/firestore';
+import { db } from "../../config/firebaseConfig"
+// import uploadData from '../../config/bulkupload';
+
 
 
 const logo = require("../../assets/images/dinetimelogo.png");
 const banner = require("../../assets/images/homeBanner.png");
 
 const Home = () => {
-  useEffect(() => {
-    uploadData();
-  }, []);
+  const [restaurants, setRestaurants] = useState([]);
+  //   useEffect(() => {
+  // uploadData();
+  // }, []);
 
-  const renderItem = ({ item }) => (
-    <TouchableOpacity className="rounded-lg w-95  overflow-hidden mr-6">
-      {/* Background Image */}
-      <ImageBackground
-        resizeMode="cover"
-        source={{ uri: item.image }}
-        className="h-40 w-full" >
-      </ImageBackground>
+  function renderItem({ item }) {
+    return (
+      <TouchableOpacity className="rounded-lg w-95  overflow-hidden mr-6">
+        {/* Background Image */}
+        <ImageBackground
+          resizeMode="cover"
+          source={{ uri: item.image }}
+          className="h-40 w-full">
+        </ImageBackground>
 
 
 
-      {/* Card Content */}
-      <View className="p-4 bg-[#444444]">
-        <Text className="text-xl mb-1 font-bold text-white">{item.name}</Text>
-        <Text className="text-gray-300 text-md">{item.address}</Text>
-        <View className="flex-row mt-2 ">
-          <Text className="font-semibold text-gray-300 mr-2">
-            Open : {item.opening} {"   "}
-          </Text>
-          <Text className="  text-gray-300">
-            Close: {item.closing}
-          </Text>
+        {/* Card Content */}
+        <View className="p-4 bg-[#444444]">
+          <Text className="text-xl mb-1 font-bold text-white">{item.name}</Text>
+          <Text className="text-gray-300 text-md">{item.address}</Text>
+          <View className="flex-row mt-2 ">
+            <Text className="font-semibold text-gray-300 mr-2">
+              Open : {item.opening} {"   "}
+            </Text>
+            <Text className="  text-gray-300">
+              Close: {item.closing}
+            </Text>
+          </View>
+
+          {/* Action Button */}
+          <TouchableOpacity className="bg-[#fb9b33] mt-4 rounded-md py-2 ">
+            <Text className="text-center text-xl font-bold text-white ">Reserve Now</Text>
+          </TouchableOpacity>
         </View>
 
-        {/* Action Button */}
-        <TouchableOpacity className="bg-[#fb9b33] mt-4 rounded-md py-2 ">
-          <Text className="text-center text-xl font-bold text-white ">Reserve Now</Text>
-        </TouchableOpacity>
-      </View>
+      </TouchableOpacity>
+    );
+  }
+  const getRestaurants = async () => {   // 👈 corrected spelling
+    try {
+      const q = query(collection(db, "restaurants")); // 👈 confirm Firebase collection ka naam
+      const querySnapshot = await getDocs(q);
+      const list = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setRestaurants(list);
+      console.log("Fetched restaurants:", list);
+    } catch (error) {
+      console.error("Error fetching restaurants:", error);
+    }
+  };
 
-    </TouchableOpacity >
-  );
+  useEffect(() => {
+    getRestaurants();  // 👈 same spelling here
+  }, []);
 
   return (
     <SafeAreaView className="bg-[#2b2b2b] flex-1">
@@ -117,18 +140,16 @@ const Home = () => {
             <FlatList
               data={restaurants}
               renderItem={renderItem}
-              keyExtractor={(item, index) => index.toString()}
+
               horizontal
               contentContainerStyle={{ padding: 16 }}
               showsHorizontalScrollIndicator={false}
-              scrollEnabled
+              scrollEnabled={true}
             />
           ) : (
             <ActivityIndicator animating color="#fb9b33" size="large" />
           )
         }
-
-
 
 
         {/* Restaurant List */}
@@ -145,11 +166,10 @@ const Home = () => {
             <FlatList
               data={restaurants}
               renderItem={renderItem}
-              keyExtractor={(item, index) => index.toString()}
               horizontal
               contentContainerStyle={{ padding: 16 }}
               showsHorizontalScrollIndicator={false}
-              scrollEnabled
+              scrollEnabled={true}
             />
           ) : (
             <ActivityIndicator animating color="#fb9b33" size="large" />
