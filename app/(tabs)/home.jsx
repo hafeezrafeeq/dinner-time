@@ -15,6 +15,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from "@expo/vector-icons";
 import { collection, getDocs, query } from 'firebase/firestore';
 import { db } from "../../config/firebaseConfig"
+import { router } from 'expo-router';
 // import uploadData from '../../config/bulkupload';
 
 
@@ -24,6 +25,7 @@ const banner = require("../../assets/images/homeBanner.png");
 
 const Home = () => {
   const [restaurants, setRestaurants] = useState([]);
+  // const router = useRouter();
   //   useEffect(() => {
   // uploadData();
   // }, []);
@@ -37,8 +39,6 @@ const Home = () => {
           source={{ uri: item.image }}
           className="h-40 w-full">
         </ImageBackground>
-
-
 
         {/* Card Content */}
         <View className="p-4 bg-[#444444]">
@@ -54,7 +54,7 @@ const Home = () => {
           </View>
 
           {/* Action Button */}
-          <TouchableOpacity className="bg-[#fb9b33] mt-4 rounded-md py-2 ">
+          <TouchableOpacity onPress={() => router.push(`/restaurant/${item.name}`)} className="bg-[#fb9b33] mt-4 rounded-md py-2 ">
             <Text className="text-center text-xl font-bold text-white ">Reserve Now</Text>
           </TouchableOpacity>
         </View>
@@ -62,6 +62,7 @@ const Home = () => {
       </TouchableOpacity>
     );
   }
+
   const getRestaurants = async () => {   // 👈 corrected spelling
     try {
       const q = query(collection(db, "restaurants")); // 👈 confirm Firebase collection ka naam
