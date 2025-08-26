@@ -9,9 +9,9 @@ const logo = require("../../assets/images/dinetimelogo.png");
 const Restaurant = () => {
     const { restaurant } = useLocalSearchParams();
 
-    const [restaurantData, setRestaurantData] = useState({});
-    const [carouselData, setCarouselData] = useState({});
-    const [SlotsData, setSlotstData] = useState({});
+    // const [restaurantData, setRestaurantData] = useState({});
+    // const [carouselData, setCarouselData] = useState({});
+    // const [SlotsData, setSlotstData] = useState({});
 
     const getRestaurantData = async () => {
         try {
@@ -31,8 +31,6 @@ const Restaurant = () => {
                     collection(db, "carousel"),
                     where("name", "==", restaurant)
                 );
-
-
             }
 
         } catch (error) {
@@ -45,7 +43,6 @@ const Restaurant = () => {
     return (
         <SafeAreaView className="bg-[#2b2b2b] flex-1">
             {/* Welcome Header */}
-
 
             <View className="flex  border-b border-1 border-stone-600 flex-row items-center justify-between px-8 h-24 pb-4 border-lg bg-[#2b2b2b] mb-3 ">
                 <View>
