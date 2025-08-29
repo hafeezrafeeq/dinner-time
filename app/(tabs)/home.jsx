@@ -54,7 +54,7 @@ const Home = () => {
           </View>
 
           {/* Action Button */}
-          <TouchableOpacity onPress={() => router.push(`/restaurant/${item.name}`)} className="bg-[#fb9b33] mt-4 rounded-md py-2 ">
+          <TouchableOpacity onPress={() => router.push(`/restaurants/${item.name}`)} className="bg-[#fb9b33] mt-4 rounded-md py-2 ">
             <Text className="text-center text-xl font-bold text-white ">Reserve Now</Text>
           </TouchableOpacity>
         </View>

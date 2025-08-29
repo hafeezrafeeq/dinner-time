@@ -3,9 +3,9 @@ import "../global.css";
 
 export default function RootLayout() {
   return (
-  <Stack screenOptions={{ headerShown: false}}>
-    <Stack name="index"/>
-    <Stack name="(tabs)"/>
-  </Stack>
-    );
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="index" />
+      <Stack.Screen name="(tabs)" />
+    </Stack>
+  );
 }
