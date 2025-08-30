@@ -95,8 +95,11 @@ const Home = () => {
         </View>
 
         <TouchableOpacity onPress={() => router.push("/profile")}>
-          <Ionicons name="person-circle-outline" size={30} className="mt-2" color="#fb9b33" />
+          <View className="mt-2">
+            <Ionicons name="person-circle-outline" size={30} color="#fb9b33" />
+          </View>
         </TouchableOpacity>
+
 
       </View>
 
