@@ -94,9 +94,9 @@ const Home = () => {
             resizeMode="contain" />
         </View>
 
-        <View>
+        <TouchableOpacity onPress={() => router.push("/profile")}>
           <Ionicons name="person-circle-outline" size={30} className="mt-2" color="#fb9b33" />
-        </View>
+        </TouchableOpacity>
 
       </View>
 

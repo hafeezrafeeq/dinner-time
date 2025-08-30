@@ -1,126 +1,176 @@
+import {
+    View,
+    Text,
+    ScrollView,
+    TouchableOpacity,
+    Image,
+    StatusBar,
+    TextInput,
+    Alert,
+} from "react-native";
 import { useRouter } from "expo-router";
-import { Image, ScrollView, StatusBar, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
+import logo from "../../assets/images/dinetimelogo.png";
+const entryImg = require("../../assets/images/Frame.png");
 import { Formik } from "formik";
 import validationSchema from "../../utils/authSchema";
-
-
-
-
-
-const logo = require("../../assets/images/dinetimelogo.png");
-const frame = require("../../assets/images/Frame.png");
-
-
-export default function signup() {
+import { doc, getFirestore, setDoc } from "firebase/firestore";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+const Signup = () => {
     const router = useRouter();
-    const handleSignup = () => {
-    }
+    const auth = getAuth();
+    const db = getFirestore();
 
+    const handleGuest = async () => {
+        await AsyncStorage.setItem("isGuest", "true");
+        router.push("/home");
+    };
+
+    const handleSignup = async (values) => {
+        try {
+            const userCredentials = await createUserWithEmailAndPassword(
+                auth,
+                values.email,
+                values.password
+            );
+            const user = userCredentials.user;
+
+            await setDoc(doc(db, "users", user.uid), {
+                email: values.email,
+                createdAt: new Date(),
+            });
+
+            await AsyncStorage.setItem("userEmail", values.email);
+            await AsyncStorage.setItem("isGuest", "false");
+
+            router.push("/home");
+        } catch (error) {
+            if (error.code === "auth/email-already-in-use") {
+                Alert.alert(
+                    "Signup Failed!",
+                    "This email address is already in use. Please use a different email.",
+                    [{ text: "OK" }]
+                );
+            } else {
+                Alert.alert(
+                    "Signup Error",
+                    "An unexpected error occurred. Please try again later.",
+                    [{ text: "OK" }]
+                );
+            }
+        }
+    };
     return (
-        <SafeAreaView style={{ backgroundColor: "#2b2b2b", flex: 1 }}>
-            <StatusBar barStyle={"light-content"} backgroundColor={"#2b2b2b"} />
+        <SafeAreaView className={`bg-[#2b2b2b]`}>
             <ScrollView contentContainerStyle={{ height: "100%" }}>
-
-                <View className="mt-2 flex flex-col items-center">
+                <View className="m-2 flex justify-center items-center">
                     <Image source={logo} alt="image"
                         style={{ width: 250, height: 250, }}
                         resizeMode="contain" />
 
-                    <View className="w-3/4 ">
-                        <Text className="text-white text-2xl font-bold text-center mb-6">
-                            Let's Get you Started
-                        </Text>
-                    </View>
-                    <View className="w-5/6 justify-center flex items-center">
-                        <Formik initialValues={{ email: "", pasword: "", }} validationSchema={validationSchema} onSubmit={handleSignup}>
-                            {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
-                                <>
-                                    <View className="w-full">
-                                        <Text className="text-[#f49b33] my-2">Emil</Text>
-                                        <TextInput
-                                            className="h-10 border border-white text-white rounded px-2"
-                                            keyboardType="email.address"
-                                            onChangeText={handleChange("emai")}
-                                            values={values.email}
-                                            onBlur={handleBlur("email")}
-                                        />
-                                        {touched.email && errors.email && (
-                                            <Text className="text-red-500 text-xs mb-2">
-                                                {errors.email}
+                    <Text className="text-2xl text-center text-white  font-bold mb-10">
+                        Let's get you started
+                    </Text>
 
-                                            </Text>)}
-                                    </View>
+                    <View className="w-5/6">
+                        <Formik
+                            initialValues={{ email: "", password: "" }}
+                            validationSchema={validationSchema}
+                            onSubmit={handleSignup}
+                        >
+                            {({
+                                handleChange,
+                                handleBlur,
+                                handleSubmit,
+                                values,
+                                errors,
+                                touched,
+                            }) => (
+                                <View className="w-full">
+                                    <Text className="text-[#f49b33] mt-4 mb-2">Email</Text>
+                                    <TextInput
+                                        className="h-10 border border-white text-white rounded px-2"
+                                        keyboardType="email-address"
+                                        onChangeText={handleChange("email")}
+                                        value={values.email}
+                                        onBlur={handleBlur("email")}
+                                    />
 
-                                    {/*  */}
+                                    {touched.email && errors.email && (
+                                        <Text className="text-red-500 text-xs mb-2">
+                                            {errors.email}
+                                        </Text>
+                                    )}
+                                    <Text className="text-[#f49b33] mt-4 mb-2">Password</Text>
+                                    <TextInput
+                                        className="h-10 border border-white text-white rounded px-2"
+                                        secureTextEntry
+                                        onChangeText={handleChange("password")}
+                                        value={values.password}
+                                        onBlur={handleBlur("password")}
+                                    />
 
-                                    <View className="w-full">
-                                        <Text className="text-[#f49b33] my-2">Password</Text>
-                                        <TextInput
-                                            className="h-10 border border-white text-white rounded px-2"
-                                            keyboardType="password.address"
-                                            secureTextEntry
-                                            onChangeText={handleChange("emai")}
-                                            values={values.password}
-                                            onBlur={handleBlur("password")}
-                                        />
-                                        {touched.password && errors.password && (
-                                            <Text className="text-red-500 text-xs mb-2">
-                                                {errors.password}
-
-                                            </Text>)}
-                                    </View>
-
-                                    {/*  */}
+                                    {touched.password && errors.password && (
+                                        <Text className="text-red-500 text-xs mb-2">
+                                            {errors.password}
+                                        </Text>
+                                    )}
 
                                     <TouchableOpacity
                                         onPress={handleSubmit}
-                                        className=" bg-[#f49b33]  px-28 py-3 mt-5 rounded"
+                                        className="p-2 my-2 bg-[#f49b33]  text-black rounded-lg mt-10"
                                     >
-                                        <Text className="text-white text-lg font-semibold text-center">
-                                            Submit
+                                        <Text className="text-lg font-semibold text-center">
+                                            Sign Up
                                         </Text>
                                     </TouchableOpacity>
-                                </>
+                                </View>
                             )}
                         </Formik>
-
-
-                        <TouchableOpacity onPress={() => router.push("/signin")}
-                            className="flex flex-row items-center justify-center mt-10"
-                        >
-                            <Text className="text-white font-semibold mr-1 ">Already a User? </Text>
-                            <Text className="text-base font-semibold underline text-[#f49b33]">Sign in</Text>
-
-                        </TouchableOpacity>
-
-                        <View>
-                            <Text className="text-white text-center font-semibold mt-2 ">
-
-                                <View className="border-b-2 border-[#f49b33] mb-1 w-20" />{" "} or{"  "}
-                                <View className="border-b-2 border-[#f49b33] mb-1 w-20" />
-                            </Text>
-
-
-                            <TouchableOpacity onPress={() => router.push("/home")}
-                                className="flex flex-row items-center justify-center mt-6"
+                        <View className="flex justify-center items-center">
+                            <TouchableOpacity
+                                className="flex flex-row justify-center mt-5 p-2 items-center"
+                                onPress={() => router.push("/signin")}
                             >
-                                <Text className="text-white font-semibold mr-1 ">be a</Text>
-                                <Text className="text-base font-semibold underline text-[#f49b33]">Guset User</Text>
-
+                                <Text className="text-white font-semibold">
+                                    Already a User?{" "}
+                                </Text>
+                                <Text className="text-base font-semibold underline text-[#f49b33]">
+                                    Sign in
+                                </Text>
                             </TouchableOpacity>
 
-
-
+                            <Text className="text-center text-base  font-semibold mb-4 text-white">
+                                <View className="border-b-2 border-[#f49b33] p-2 mb-1 w-24" />{" "}
+                                or{" "}
+                                <View className="border-b-2 border-[#f49b33] p-2 mb-1 w-24" />
+                            </Text>
+                            <TouchableOpacity
+                                className="flex flex-row justify-center mb-5 p-2 items-center"
+                                onPress={handleGuest}
+                            >
+                                <Text className="text-white font-semibold">Be a</Text>
+                                <Text className="text-base font-semibold underline text-[#f49b33]">
+                                    {" "}
+                                    Guest User
+                                </Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </View>
-
-                <View className=" flex-1">
-                    <Image source={frame} className="w-full h-full " resizeMode="contain" />
+                <View className="flex-1">
+                    <Image
+                        source={entryImg}
+                        className="w-full h-full"
+                        resizeMode="contain"
+                    />
                 </View>
-
+                <StatusBar barStyle={"light-content"} backgroundColor={"#2b2b2b"} />
             </ScrollView>
-        </SafeAreaView >
+        </SafeAreaView>
     );
-}
+};
+
+export default Signup;
